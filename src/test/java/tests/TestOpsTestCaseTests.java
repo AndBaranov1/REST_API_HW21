@@ -29,7 +29,6 @@ public class TestOpsTestCaseTests extends TestBase{
     String testCaseDescriptionInitial = faker.address().fullAddress();
     String testCaseDescriptionUpdated = faker.color().name();
     String stepNameInitial = faker.book().title();
-    String stepNameUpdated = faker.book().genre();
 
 
     @Tag("update")
