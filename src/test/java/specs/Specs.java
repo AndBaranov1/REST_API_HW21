@@ -7,9 +7,6 @@ import io.restassured.specification.ResponseSpecification;
 import static helpers.CustomAllureListener.withCustomTemplates;
 import static io.restassured.RestAssured.with;
 import static io.restassured.filter.log.LogDetail.ALL;
-import static io.restassured.filter.log.LogDetail.BODY;
-import static io.restassured.filter.log.LogDetail.STATUS;
-import static io.restassured.http.ContentType.JSON;
 import static tests.TestData.allureTestopsSession;
 import static tests.TestData.xsrfToken;
 
@@ -27,9 +24,7 @@ public class Specs {
 
     public static ResponseSpecification responseSpec = new ResponseSpecBuilder()
             .log(ALL)
-            //.expectContentType("application/json")
+            .expectContentType("application/json")
             .expectStatusCode(200)
             .build();
-
-
 }

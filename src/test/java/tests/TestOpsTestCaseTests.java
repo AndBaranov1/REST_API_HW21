@@ -28,6 +28,8 @@ public class TestOpsTestCaseTests extends TestBase{
     String testCaseNameUpdated = faker.book().author();
     String testCaseDescriptionInitial = faker.address().fullAddress();
     String testCaseDescriptionUpdated = faker.color().name();
+    String stepNameInitial = faker.book().title();
+    String stepNameUpdated = faker.book().genre();
 
     @Tag("update")
     @Test
@@ -35,7 +37,7 @@ public class TestOpsTestCaseTests extends TestBase{
         CreateTestCaseBodyModel createTestCaseBody = new CreateTestCaseBodyModel();
         createTestCaseBody.setName(testCaseNameInitial);
 
-       /* step("Authorize", () -> {
+        step("Authorize", () -> {
             loginPage.openPage()
                     .setLogin(login)
                     .setPassword(password)
@@ -44,7 +46,7 @@ public class TestOpsTestCaseTests extends TestBase{
         });
 
         step("Go to project", () ->
-                testCasesPage.openProjectPage());*/
+                testCasesPage.openProjectPage());
 
         CreateTestCaseResponseModel createTestCaseResponse = step("Create testcase", () ->
                 given(requestSpec)
@@ -93,5 +95,48 @@ public class TestOpsTestCaseTests extends TestBase{
         step("Check updated description", () ->
                 testCasesPage.checkTestCaseDescription(testCaseDescriptionUpdated));
     }
+
+    @Test
+    @Tag("update")
+    void addStepToTestCaseTest() {
+        CreateTestCaseBodyModel createTestCaseBody = new CreateTestCaseBodyModel();
+        createTestCaseBody.setName(testCaseNameInitial);
+
+        step("Authorize", () -> {
+            loginPage.openPage()
+                    .setLogin(login)
+                    .setPassword(password)
+                    .clickSubmit();
+            testCasesPage.checkSideMenu();
+        });
+
+        step("Go to project", () ->
+                testCasesPage.openProjectPage());
+
+        CreateTestCaseResponseModel createTestCaseResponse = step("Create testcase", () ->
+                given(requestSpec)
+                        .body(createTestCaseBody)
+                        .queryParam("projectId", projectId)
+                        .when()
+                        .post("/testcasetree/leaf")
+                        .then()
+                        .spec(responseSpec)
+                        .extract().as(CreateTestCaseResponseModel.class));
+
+        Integer testCaseId = createTestCaseResponse.getId();
+
+        step("Open test case editor", () ->
+                testCasesPage.openTestCaseEditor(projectId, testCaseId));
+
+        step("Check test case name", () ->
+                testCasesPage.checkTestCaseNameInEditor(testCaseNameInitial));
+
+        step("Add step to test case", () ->
+                testCasesPage.addStepToTestCase(stepNameInitial));
+
+        step("Check step name", () ->
+                testCasesPage.checkStepName(stepNameInitial));
+    }
+
 
 }

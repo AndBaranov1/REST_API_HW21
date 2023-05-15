@@ -1,12 +1,8 @@
 package tests;
 
 import com.github.javafaker.Faker;
-import io.qameta.allure.Owner;
-import io.qameta.allure.Story;
 import models.CreateTestCaseBodyModel;
 import models.CreateTestCaseResponseModel;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.LoginPage;
 import pages.TestCasesPage;
@@ -121,12 +117,6 @@ public class CreateTestCaseTests extends TestBase{
                     .statusCode(200)
                     .body("statusName", is("Draft"))
                     .body("name", is(testCaseName));
-
-        });
-
-        step("Verify testcase name", () -> {
-
         });
     }
-
 }
